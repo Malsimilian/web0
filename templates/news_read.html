@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{news.title}}</h2>
+<h4>
+    Автор - {{news.user.name}}, Дата написания - {{news.created_date}}
+</h4>
+{{news.content}}
+
+{% endblock %}
