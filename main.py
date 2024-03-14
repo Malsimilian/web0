@@ -5,9 +5,9 @@ from data.news import News
 from forms.user import RegisterForm
 from forms.login import LoginForm
 from forms.newsform import NewsForm
-import datetime
 from flask import render_template, make_response, request, session, redirect, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from data import db_session, news_api
 
 
 app = Flask(__name__)
@@ -17,8 +17,8 @@ login_manager.init_app(app)
 
 
 def main():
-
     db_session.global_init("db/bs.db")
+    app.register_blueprint(news_api.blueprint)
     app.run(port=8080, host='127.0.0.1')
 
 @app.route("/")
