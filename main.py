@@ -8,6 +8,7 @@ from forms.newsform import NewsForm
 from flask import render_template, make_response, request, session, redirect, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from data import db_session, news_api
+from flask import jsonify
 
 
 app = Flask(__name__)
@@ -174,6 +175,16 @@ def news_read(id):
                                       News.user == current_user
                                       ).first()
     return render_template('news_read.html', news=news)
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
+
+@app.errorhandler(400)
+def bad_request(_):
+    return make_response(jsonify({'error': 'Bad Request'}), 400)
 
 
 if __name__ == '__main__':
