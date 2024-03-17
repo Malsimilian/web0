@@ -39,6 +39,7 @@ def get_one_news(news_id):
         }
     )
 
+
 @blueprint.route('/api/news', methods=['POST'])
 def create_news():
     if not request.json:
@@ -56,6 +57,7 @@ def create_news():
     db_sess.add(news)
     db_sess.commit()
     return jsonify({'id': news.id})
+
 
 @blueprint.route('/api/news/<int:news_id>', methods=['DELETE'])
 def delete_news(news_id):

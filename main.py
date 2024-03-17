@@ -10,7 +10,6 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from data import db_session, news_api
 from flask import jsonify
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
@@ -22,6 +21,7 @@ def main():
     app.register_blueprint(news_api.blueprint)
     app.run(port=8080, host='127.0.0.1')
 
+
 @app.route("/")
 def index():
     db_sess = db_session.create_session()
@@ -32,6 +32,7 @@ def index():
     else:
         news = db_sess.query(News).filter(News.is_private != True)
     return render_template("index.html", news=news)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def reqister():
@@ -57,6 +58,7 @@ def reqister():
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
 
+
 @app.route("/cookie_test")
 def cookie_test():
     visits_count = int(request.cookies.get("visits_count", 0))
@@ -72,6 +74,7 @@ def cookie_test():
                        max_age=10)
     return res
 
+
 @app.route("/session_test")
 def session_test():
     visits_count = session.get('visits_count', 0)
@@ -79,10 +82,12 @@ def session_test():
     return make_response(
         f"Вы пришли на эту страницу {visits_count + 1} раз")
 
+
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -98,13 +103,15 @@ def login():
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect("/")
 
-@app.route('/news',  methods=['GET', 'POST'])
+
+@app.route('/news', methods=['GET', 'POST'])
 @login_required
 def add_news():
     form = NewsForm()
@@ -120,6 +127,7 @@ def add_news():
         return redirect('/')
     return render_template('news.html', title='Добавление новости',
                            form=form)
+
 
 @app.route('/news/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -154,6 +162,7 @@ def edit_news(id):
                            form=form
                            )
 
+
 @app.route('/news_delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def news_delete(id):
@@ -167,6 +176,7 @@ def news_delete(id):
     else:
         abort(404)
     return redirect('/')
+
 
 @app.route('/news_read/<int:id>')
 def news_read(id):
