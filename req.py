@@ -15,11 +15,6 @@ def two():
 
 
 def tri():
-    print(post('http://localhost:8080/api/news', json={}).json())
-
-    print(post('http://localhost:8080/api/news',
-               json={'title': 'Заголовок'}).json())
-
     print(post('http://localhost:8080/api/news',
                json={'title': 'Заголовок',
                      'content': 'Текст новости',
@@ -34,4 +29,4 @@ def ch():
     print(delete('http://localhost:8080/api/news/2').json())
 
 
-ch()
+tri()
