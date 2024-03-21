@@ -9,6 +9,7 @@ from flask import render_template, make_response, request, session, redirect, ab
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from data import db_session, news_api
 from flask import jsonify
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -19,7 +20,8 @@ login_manager.init_app(app)
 def main():
     db_session.global_init("db/bs.db")
     app.register_blueprint(news_api.blueprint)
-    app.run(port=8080, host='127.0.0.1')
+    # port = int(os.environ.get("PORT", 4321))
+    app.run(host='0.0.0.0', port=4554)
 
 
 @app.route("/")

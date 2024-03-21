@@ -36,6 +36,8 @@ class Game:
         self.player_cards = []
         self.player_pass = False
         self.delear_pass = False
+        self.player_win = False
+        self.delear_win = False
 
     def get_card_palyer(self):
         self.player_cards.append(self.delear.dealing())
@@ -112,31 +114,40 @@ class Game:
 
     def start_round(self):
         self.issue()
-        while True:
-            if self.player_loss():
-                return 'delear'
-            if self.delear_loss():
-                return 'player'
-            if self.push():
-                return 'delear'
-            if self.delear_win():
-                return 'delear'
-            if self.player_win():
-                return 'player'
-            self.the_game_itself()
-
-    def finish_round(self):
         self.delear_cards = []
         self.player_cards = []
         self.player_pass = False
         self.delear_pass = False
+        self.player_win = False
+        self.delear_win = False
         self.delear.new_deck()
 
-    def start_game(self):
-        while True:
-            print(self.start_round(), self.player_cards, self.delear_cards)
-            self.finish_round()
+    def finish_round(self):
+        pass
 
 
-game = Game()
-game.start_game()
+    def set_player_pass(self):
+        self.player_pass = True
+
+    def set_player_unpass(self):
+        self.player_pass = False
+
+    def get_player_score(self):
+        return self.summ_card(self.player_cards)
+
+    def get_delear_score(self):
+        return self.summ_card(self.delear_cards)
+
+    def delear_play(self):
+        while self.delear_tactick():
+            self.get_card_delear()
+
+    def is_win(self):
+        if self.player_win or self.delear_win:
+            return True
+        return False
+
+
+if __name__ == '__main__':
+    game = Game()
+    game.start_game()
