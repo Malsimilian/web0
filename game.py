@@ -59,21 +59,35 @@ class Game:
     def check_black_jack(self, cards):
         return self.summ_card(cards) == 21
 
-    def player_win(self):
+    def check_player_win(self):
         if self.check_black_jack(self.player_cards):
+            self.player_win = True
             return True
         if self.player_pass and self.delear_pass:
             if self.summ_card(self.player_cards) > self.summ_card(self.delear_cards):
+                self.player_win = True
                 return True
         return False
 
-    def delear_win(self):
+    def check_delear_win(self):
         if self.check_black_jack(self.delear_cards):
             return True
         if self.player_pass and self.delear_pass:
             if self.summ_card(self.player_cards) < self.summ_card(self.delear_cards):
                 return True
         return False
+
+    def check_win_loss(self):
+        if self.player_loss():
+            self.delear_win = True
+        elif self.delear_loss():
+            self.player_win = True
+        elif self.push():
+            self.delear_win = True
+        elif self.check_delear_win():
+            self.delear_win = True
+        elif self.check_player_win():
+            self.player_win = True
 
     def player_loss(self):
         return self.summ_card(self.player_cards) > 21
@@ -113,7 +127,6 @@ class Game:
                 self.delear_pass = True
 
     def start_round(self):
-        self.issue()
         self.delear_cards = []
         self.player_cards = []
         self.player_pass = False
@@ -121,6 +134,7 @@ class Game:
         self.player_win = False
         self.delear_win = False
         self.delear.new_deck()
+        self.issue()
 
     def finish_round(self):
         pass
@@ -141,6 +155,7 @@ class Game:
     def delear_play(self):
         while self.delear_tactick():
             self.get_card_delear()
+        self.delear_pass = True
 
     def is_win(self):
         if self.player_win or self.delear_win:
@@ -149,5 +164,5 @@ class Game:
 
 
 if __name__ == '__main__':
-    game = Game()
-    game.start_game()
+    deck = Deck()
+    print(21 - sum(deck.cards) / len(deck.cards))

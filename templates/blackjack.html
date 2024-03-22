@@ -2,19 +2,21 @@
 
 {% block content %}
 <h1> БлэкДжек </h1>
-    {% if not game.is_win %}
-        <p> Ваши карты: {{score1}} Карты дилера: {{score2}} </p>
+    <p> Ваши карты: {{game.get_player_score()}}
+        Карты дилера: {{game.get_delear_score()}} </p>
+    {% if not game.is_win() %}
         {% if not game.player_pass %}
         <a href="/add" class="btn btn-danger"> Добрать </a>
-        {% endif %}
         <a href="/pass" class="btn btn-danger"> Спасовать </a>
+        {% endif %}
     {% elif game.player_win %}
         <p>ВЫ ПОБЕДИЛИ</p>
-        <a href="/newgame" class="btn btn-danger"> Начать новую игру </a>
+        <a href="/start" class="btn btn-danger"> Начать новую игру </a>
     {% else %}
         <p>вы Проиграли</p>
         <a href="/start" class="btn btn-danger"> Начать новую игру </a>
     {% endif %}
+    <a href="/info" class="btn btn-danger"> info </a>
 
 
 {% endblock %}

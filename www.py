@@ -8,9 +8,10 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    score1 = game.get_player_score()
-    score2 = game.get_delear_score()
-    return render_template('blackjack.html', score1=score1, score2=score2, game=game)
+    if game.player_pass:
+        game.delear_play()
+    game.check_win_loss()
+    return render_template('blackjack.html', game=game)
 
 @app.route("/add", methods=['GET', 'POST'])
 def add():
@@ -22,9 +23,11 @@ def pas():
     game.set_player_pass()
     return redirect('/')
 
-@app.route("/unpass", methods=['GET', 'POST'])
+@app.route("/info", methods=['GET', 'POST'])
 def unpas():
-    game.set_player_unpass()
+    print(game.player_cards, game.delear_cards)
+    print(game.player_win, game.delear_win)
+    print(game.player_pass, game.delear_pass)
     return redirect('/')
 
 @app.route("/finish", methods=['GET', 'POST'])
