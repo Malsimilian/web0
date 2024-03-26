@@ -13,32 +13,22 @@ def index():
     game.check_win_loss()
     return render_template('blackjack.html', game=game)
 
-@app.route("/add", methods=['GET', 'POST'])
-def add():
-    game.get_card_palyer()
-    return redirect('/')
+@app.route("/blackjack/<info>", methods=['GET', 'POST'])
+def blackjack(info):
+    if info == 'add':
+        game.get_card_palyer()
+    elif info == 'pass':
+        game.set_player_pass()
+    elif info == 'start':
+        game.start_round()
+    if game.player_pass:
+        game.delear_play()
+    game.check_win_loss()
+    return render_template('blackjack.html', game=game)
 
-@app.route("/pass", methods=['GET', 'POST'])
-def pas():
-    game.set_player_pass()
-    return redirect('/')
-
-@app.route("/info", methods=['GET', 'POST'])
-def unpas():
-    print(game.player_cards, game.delear_cards)
-    print(game.player_win, game.delear_win)
-    print(game.player_pass, game.delear_pass)
-    return redirect('/')
-
-@app.route("/finish", methods=['GET', 'POST'])
-def finish():
-    game.finish_round()
-    return redirect('/')
-
-@app.route("/start", methods=['GET', 'POST'])
-def start():
-    game.start_round()
-    return redirect('/')
+@app.route("/ss", methods=['GET', 'POST'])
+def ss():
+    return render_template('ss.html')
 
 
 if __name__ == '__main__':
